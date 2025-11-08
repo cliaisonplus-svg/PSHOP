@@ -2,7 +2,7 @@ export function initCarousel(containerId, images) {
     const container = document.getElementById(containerId);
     if (!container || !images || images.length === 0) {
         if (container) {
-            container.innerHTML = `<img src="https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400/212529/FFFFFF/png?text=Pas+d'image" alt="Image par défaut" class="product-card__image">`;
+            container.innerHTML = `<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iIzIxMjUyOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiNGRkZGRkYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QYXMgZCZhcG9zO2ltYWdlPC90ZXh0Pjwvc3ZnPg==" alt="Image par défaut" class="product-card__image">`;
         }
         return;
     }

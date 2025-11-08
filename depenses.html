@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Dépenses</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-top">
+                <h1><i data-lucide="credit-card"></i> Gestion des Dépenses</h1>
+                <div class="header-actions">
+                    <a href="dashboard.html" class="btn btn-primary">
+                        <i data-lucide="bar-chart"></i> <span class="btn-text">Tableau de bord</span>
+                    </a>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">
+                    <i data-lucide="package"></i> <span>Produits</span>
+                </a>
+                <a href="ajouter.html" class="nav-link btn-primary">
+                    <i data-lucide="plus-circle"></i> <span>Ajouter</span>
+                </a>
+                <a href="ventes.html" class="nav-link">
+                    <i data-lucide="dollar-sign"></i> <span>Ventes</span>
+                </a>
+                <a href="depenses.html" class="nav-link active">
+                    <i data-lucide="credit-card"></i> <span>Dépenses</span>
+                </a>
+                <a href="dashboard.html" class="nav-link">
+                    <i data-lucide="bar-chart"></i> <span>Tableau de bord</span>
+                </a>
+                <a href="personnaliser.html" class="nav-link">
+                    <i data-lucide="palette"></i> <span>Personnaliser</span>
+                </a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="sales-section">
+                <h2>Enregistrer une dépense</h2>
+                <form id="expense-form" class="card">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="expense-category">Catégorie *</label>
+                            <select id="expense-category" required>
+                                <option value="">Sélectionner une catégorie...</option>
+                                <option value="achat-produit">Achat de produit</option>
+                                <option value="loyer">Loyer</option>
+                                <option value="salaires">Salaires</option>
+                                <option value="marketing">Marketing / Publicité</option>
+                                <option value="transport">Transport / Livraison</option>
+                                <option value="utilities">Services (électricité, eau, internet)</option>
+                                <option value="fournitures">Fournitures de bureau</option>
+                                <option value="maintenance">Maintenance / Réparation</option>
+                                <option value="autres">Autres</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-amount">Montant (FCFA) *</label>
+                            <input type="number" id="expense-amount" step="1" min="0" required placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-date">Date *</label>
+                            <input type="date" id="expense-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-supplier">Fournisseur / Bénéficiaire</label>
+                            <input type="text" id="expense-supplier" placeholder="Nom du fournisseur">
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="expense-description">Description</label>
+                            <textarea id="expense-description" rows="3" placeholder="Détails de la dépense..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i data-lucide="save"></i> Enregistrer la dépense
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="sales-list-section">
+                <h2>Historique des dépenses</h2>
+                <div id="expenses-list" class="sales-list">
+                    <!-- Les dépenses seront affichées ici -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/depenses.js"></script>
+    <script type="module" src="js/ui.js"></script>
+</body>
+</html>
+

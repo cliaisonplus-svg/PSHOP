@@ -1,0 +1,140 @@
+/* Améliorations d'accessibilité et d'ergonomie */
+
+/* Focus visible pour la navigation au clavier */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Amélioration du contraste */
+button:not(:disabled),
+a:not([disabled]) {
+    cursor: pointer;
+}
+
+button:disabled,
+a[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Tooltips */
+[title] {
+    position: relative;
+}
+
+/* États de chargement */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Amélioration des liens */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Amélioration de la lisibilité */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3;
+    margin-bottom: 0.5em;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+/* Amélioration des listes */
+ul, ol {
+    padding-left: 1.5rem;
+}
+
+/* Amélioration des tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    font-weight: 600;
+}
+
+/* États de validation des formulaires */
+input:valid:not(:placeholder-shown) {
+    border-color: var(--success);
+}
+
+input:invalid:not(:placeholder-shown):not(:focus) {
+    border-color: var(--danger);
+}
+
+/* Indicateur de champ requis */
+.required::after {
+    content: ' *';
+    color: var(--danger);
+}
+
+/* Skip link pour l'accessibilité */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Amélioration du contraste pour le mode sombre */
+.dark-mode {
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+

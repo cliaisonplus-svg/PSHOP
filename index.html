@@ -11,24 +11,49 @@
     <meta property="og:image:alt" content="Aperçu de l'application de gestion de produits">
     <meta name="twitter:title" content="Gestion de Produits Informatiques">
     <meta name="twitter:description" content="Application pour gérer un catalogue de produits informatiques.">
-    <link rel="stylesheet" href="/css/theme.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/grid.css">
-    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/accessibility.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Catalogue Produits</h1>
-            <div class="header-actions">
-                <input type="search" id="search-bar" placeholder="Rechercher par nom...">
-                <a href="/ajouter.html" class="btn btn-primary">
-                    <i data-lucide="plus-circle"></i> Ajouter un produit
-                </a>
-                <a href="/personnaliser.html" class="btn btn-secondary">
-                    <i data-lucide="palette"></i> Personnaliser
-                </a>
+        <header class="main-header">
+            <div class="header-top">
+                <h1><i data-lucide="package"></i> Catalogue Produits</h1>
+                <div class="header-actions">
+                    <div class="search-wrapper">
+                        <input type="search" id="search-bar" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
+                        <i data-lucide="search" class="search-icon"></i>
+                    </div>
+                    <button id="presentation-mode-toggle" class="btn btn-secondary" title="Basculer en mode présentation">
+                        <i data-lucide="eye"></i> <span class="btn-text">Présentation</span>
+                    </button>
+                </div>
             </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link active">
+                    <i data-lucide="package"></i> <span>Produits</span>
+                </a>
+                <a href="ajouter.html" class="nav-link btn-primary">
+                    <i data-lucide="plus-circle"></i> <span>Ajouter</span>
+                </a>
+                <a href="ventes.html" class="nav-link">
+                    <i data-lucide="dollar-sign"></i> <span>Ventes</span>
+                </a>
+                <a href="depenses.html" class="nav-link">
+                    <i data-lucide="credit-card"></i> <span>Dépenses</span>
+                </a>
+                <a href="dashboard.html" class="nav-link">
+                    <i data-lucide="bar-chart"></i> <span>Tableau de bord</span>
+                </a>
+                <a href="personnaliser.html" class="nav-link">
+                    <i data-lucide="palette"></i> <span>Personnaliser</span>
+                </a>
+            </nav>
         </header>
 
         <aside class="filters">
@@ -44,12 +69,12 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label for="price-min-filter">Prix Min</label>
-                <input type="number" id="price-min-filter" placeholder="0">
+                <label for="price-min-filter">Prix Min (FCFA)</label>
+                <input type="number" id="price-min-filter" placeholder="0" step="1" min="0">
             </div>
             <div class="filter-group">
-                <label for="price-max-filter">Prix Max</label>
-                <input type="number" id="price-max-filter" placeholder="5000">
+                <label for="price-max-filter">Prix Max (FCFA)</label>
+                <input type="number" id="price-max-filter" placeholder="5000000" step="1" min="0">
             </div>
              <div class="filter-group">
                 <button id="export-json" class="btn btn-secondary full-width"><i data-lucide="download"></i> Exporter en JSON</button>
@@ -65,7 +90,8 @@
         </main>
     </div>
 
-    <script type="module" src="/js/main.js"></script>
-    <script type="module" src="/js/ui.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/ui.js"></script>
 </body>
 </html>

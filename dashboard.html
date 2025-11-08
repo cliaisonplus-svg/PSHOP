@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-top">
+                <h1><i data-lucide="bar-chart"></i> Tableau de Bord</h1>
+                <div class="header-actions">
+                    <a href="ventes.html" class="btn btn-primary">
+                        <i data-lucide="dollar-sign"></i> <span class="btn-text">Gestion des ventes</span>
+                    </a>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">
+                    <i data-lucide="package"></i> <span>Produits</span>
+                </a>
+                <a href="ajouter.html" class="nav-link btn-primary">
+                    <i data-lucide="plus-circle"></i> <span>Ajouter</span>
+                </a>
+                <a href="ventes.html" class="nav-link">
+                    <i data-lucide="dollar-sign"></i> <span>Ventes</span>
+                </a>
+                <a href="depenses.html" class="nav-link">
+                    <i data-lucide="credit-card"></i> <span>Dépenses</span>
+                </a>
+                <a href="dashboard.html" class="nav-link active">
+                    <i data-lucide="bar-chart"></i> <span>Tableau de bord</span>
+                </a>
+                <a href="personnaliser.html" class="nav-link">
+                    <i data-lucide="palette"></i> <span>Personnaliser</span>
+                </a>
+            </nav>
+        </header>
+
+        <main class="dashboard-main">
+            <!-- Statistiques principales -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-sales">
+                        <i data-lucide="dollar-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Ventes totales</h3>
+                        <p class="stat-value" id="total-sales">0 FCFA</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-profit">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Bénéfice total</h3>
+                        <p class="stat-value" id="total-profit">0 FCFA</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-items">
+                        <i data-lucide="bar-chart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Produits vendus</h3>
+                        <p class="stat-value" id="total-items">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-transactions">
+                        <i data-lucide="dollar-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Transactions</h3>
+                        <p class="stat-value" id="total-transactions">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistiques du mois -->
+            <div class="stats-section">
+                <h2>Ce mois</h2>
+                <div class="month-stats">
+                    <div class="month-stat-card">
+                        <h4>Ventes du mois</h4>
+                        <p class="stat-value" id="month-sales">0 FCFA</p>
+                    </div>
+                    <div class="month-stat-card">
+                        <h4>Bénéfice net du mois</h4>
+                        <p class="stat-value" id="month-profit">0 FCFA</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistiques des dépenses -->
+            <div class="stats-section">
+                <h2>Dépenses</h2>
+                <div class="month-stats">
+                    <div class="month-stat-card expense-stat">
+                        <h4>Dépenses totales</h4>
+                        <p class="stat-value expense-amount" id="total-expenses">0 FCFA</p>
+                    </div>
+                    <div class="month-stat-card expense-stat">
+                        <h4>Dépenses du mois</h4>
+                        <p class="stat-value expense-amount" id="month-expenses">0 FCFA</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Graphique des 7 derniers jours -->
+            <div class="chart-section">
+                <h2>Évolution sur 7 jours</h2>
+                <div class="chart-container">
+                    <canvas id="sales-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Ventes récentes -->
+            <div class="recent-sales-section">
+                <h2>Ventes récentes</h2>
+                <div id="recent-sales-list" class="recent-sales-list">
+                    <!-- Les ventes récentes seront affichées ici -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/ui.js"></script>
+</body>
+</html>
+

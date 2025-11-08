@@ -1,6 +1,8 @@
 import { getProductById, saveProduct } from './storage.js';
 import { generateUUID, formatCurrency } from './utils.js';
 import { initCarousel } from './carousel.js';
+import { initIcons } from './ui.js';
+import { showNotification } from './notifications.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -75,23 +77,65 @@ async function handleProductForm(productId) {
         formTitle.textContent = 'Ajouter un nouveau produit';
     }
 
+    // Input fichier normal
     photosInput.addEventListener('change', (e) => {
         if (e.target.files.length + existingPhotos.length > 6) {
-            alert('Vous ne pouvez téléverser que 6 photos au maximum.');
+            showNotification('Vous ne pouvez téléverser que 6 photos au maximum.', 'warning');
             e.target.value = ''; // Reset file input
             return;
         }
         handlePhotoFiles(e.target.files);
     });
 
+    // Bouton caméra
+    const cameraBtn = document.getElementById('camera-btn');
+    const cameraInput = document.getElementById('camera-input');
+    
+    if (cameraBtn && cameraInput) {
+        cameraBtn.addEventListener('click', () => {
+            cameraInput.click();
+        });
+
+        cameraInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                if (existingPhotos.length >= 6) {
+                    showNotification('Vous ne pouvez téléverser que 6 photos au maximum.', 'warning');
+                    e.target.value = '';
+                    return;
+                }
+                handlePhotoFiles(e.target.files);
+                e.target.value = ''; // Reset pour permettre de prendre une autre photo
+            }
+        });
+    }
+
     function renderPhotoPreviews(photoArray) {
         photosPreview.innerHTML = '';
         photoArray.forEach((photoSrc, index) => {
             const imgContainer = document.createElement('div');
             imgContainer.style.position = 'relative';
+            
             const img = document.createElement('img');
             img.src = photoSrc;
+            img.alt = `Photo ${index + 1} du produit`;
+            img.loading = 'lazy';
+            
+            // Bouton pour supprimer la photo
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'photo-remove-btn';
+            removeBtn.innerHTML = '×';
+            removeBtn.setAttribute('aria-label', `Supprimer la photo ${index + 1}`);
+            removeBtn.title = 'Supprimer cette photo';
+            removeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                existingPhotos.splice(index, 1);
+                renderPhotoPreviews(existingPhotos);
+                showNotification('Photo supprimée', 'info');
+            });
+            
             imgContainer.appendChild(img);
+            imgContainer.appendChild(removeBtn);
             photosPreview.appendChild(imgContainer);
         });
     }
@@ -118,33 +162,40 @@ async function handleProductForm(productId) {
         e.preventDefault();
         
         if (existingPhotos.length < 3 && photosInput.files.length === 0 && !productId) {
-            alert('Veuillez ajouter au moins 3 photos.');
+            showNotification('Veuillez ajouter au moins 3 photos.', 'warning');
             return;
         }
 
-        const product = {
-            id: productId || generateUUID(),
-            nom: nomInput.value,
-            categorie: categorieInput.value,
-            description: descriptionInput.value,
-            prixPartenaire: parseFloat(prixPartenaireInput.value),
-            prixRevente: parseFloat(prixReventeInput.value),
-            marge: (parseFloat(prixReventeInput.value) || 0) - (parseFloat(prixPartenaireInput.value) || 0),
-            stock: parseInt(stockInput.value),
-            photos: existingPhotos,
-            specifications: {
-                processeur: specProcesseur.value,
-                ram: specRam.value,
-                stockage: specStockage.value,
-                carteGraphique: specCarteGraphique.value,
-                ecran: specEcran.value,
-            },
-            dateAjout: productId ? (await getProductById(productId)).dateAjout : new Date().toISOString()
-        };
+        try {
+            const product = {
+                id: productId || generateUUID(),
+                nom: nomInput.value,
+                categorie: categorieInput.value,
+                description: descriptionInput.value,
+                prixPartenaire: parseFloat(prixPartenaireInput.value),
+                prixRevente: parseFloat(prixReventeInput.value),
+                marge: (parseFloat(prixReventeInput.value) || 0) - (parseFloat(prixPartenaireInput.value) || 0),
+                stock: parseInt(stockInput.value),
+                photos: existingPhotos,
+                specifications: {
+                    processeur: specProcesseur.value,
+                    ram: specRam.value,
+                    stockage: specStockage.value,
+                    carteGraphique: specCarteGraphique.value,
+                    ecran: specEcran.value,
+                },
+                dateAjout: productId ? (await getProductById(productId)).dateAjout : new Date().toISOString()
+            };
 
-        await saveProduct(product);
-        alert('Produit enregistré avec succès !');
-        window.location.href = '/';
+            await saveProduct(product);
+            showNotification('Produit enregistré avec succès !', 'success');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        } catch (error) {
+            showNotification('Erreur lors de l\'enregistrement du produit.', 'error');
+            console.error(error);
+        }
     });
 }
 
@@ -153,14 +204,14 @@ async function displayProductDetails(productId) {
     const title = document.getElementById('product-name-title');
 
     if (!productId) {
-        contentArea.innerHTML = '<p>Aucun produit sélectionné. <a href="/">Retour à la liste</a></p>';
+        contentArea.innerHTML = '<p>Aucun produit sélectionné. <a href="index.html">Retour à la liste</a></p>';
         return;
     }
 
     const product = await getProductById(productId);
 
     if (!product) {
-        contentArea.innerHTML = '<p>Produit non trouvé. <a href="/">Retour à la liste</a></p>';
+        contentArea.innerHTML = '<p>Produit non trouvé. <a href="index.html">Retour à la liste</a></p>';
         return;
     }
     
@@ -198,4 +249,8 @@ async function displayProductDetails(productId) {
     `;
 
     initCarousel('product-carousel-container', product.photos);
+    // Initialize icons after rendering
+    setTimeout(() => {
+        initIcons();
+    }, 100);
 }

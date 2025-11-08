@@ -4,20 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personnaliser le Thème</title>
-    <link rel="stylesheet" href="/css/theme.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/form.css">
-    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/accessibility.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Personnaliser le Thème</h1>
-            <div class="header-actions">
-                <a href="/" class="btn btn-secondary">
-                    <i data-lucide="arrow-left"></i> Retour à l'accueil
-                </a>
+        <header class="main-header">
+            <div class="header-top">
+                <h1><i data-lucide="palette"></i> Personnaliser le Thème</h1>
+                <div class="header-actions">
+                    <a href="index.html" class="btn btn-secondary">
+                        <i data-lucide="arrow-left"></i> <span class="btn-text">Retour</span>
+                    </a>
+                </div>
             </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">
+                    <i data-lucide="package"></i> <span>Produits</span>
+                </a>
+                <a href="ajouter.html" class="nav-link btn-primary">
+                    <i data-lucide="plus-circle"></i> <span>Ajouter</span>
+                </a>
+                <a href="ventes.html" class="nav-link">
+                    <i data-lucide="dollar-sign"></i> <span>Ventes</span>
+                </a>
+                <a href="depenses.html" class="nav-link">
+                    <i data-lucide="credit-card"></i> <span>Dépenses</span>
+                </a>
+                <a href="dashboard.html" class="nav-link">
+                    <i data-lucide="bar-chart"></i> <span>Tableau de bord</span>
+                </a>
+                <a href="personnaliser.html" class="nav-link active">
+                    <i data-lucide="palette"></i> <span>Personnaliser</span>
+                </a>
+            </nav>
         </header>
 
         <main class="personalize-layout">
@@ -67,6 +93,7 @@
         </main>
     </div>
 
-    <script type="module" src="/js/ui.js"></script>
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/ui.js"></script>
 </body>
 </html>

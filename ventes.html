@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Ventes</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-top">
+                <h1><i data-lucide="dollar-sign"></i> Gestion des Ventes</h1>
+                <div class="header-actions">
+                    <a href="dashboard.html" class="btn btn-primary">
+                        <i data-lucide="bar-chart"></i> <span class="btn-text">Tableau de bord</span>
+                    </a>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">
+                    <i data-lucide="package"></i> <span>Produits</span>
+                </a>
+                <a href="ajouter.html" class="nav-link btn-primary">
+                    <i data-lucide="plus-circle"></i> <span>Ajouter</span>
+                </a>
+                <a href="ventes.html" class="nav-link active">
+                    <i data-lucide="dollar-sign"></i> <span>Ventes</span>
+                </a>
+                <a href="depenses.html" class="nav-link">
+                    <i data-lucide="credit-card"></i> <span>Dépenses</span>
+                </a>
+                <a href="dashboard.html" class="nav-link">
+                    <i data-lucide="bar-chart"></i> <span>Tableau de bord</span>
+                </a>
+                <a href="personnaliser.html" class="nav-link">
+                    <i data-lucide="palette"></i> <span>Personnaliser</span>
+                </a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="sales-section">
+                <h2>Enregistrer une vente</h2>
+                <form id="sale-form" class="card">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="sale-product">Produit *</label>
+                            <select id="sale-product" required>
+                                <option value="">Sélectionner un produit...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sale-quantity">Quantité *</label>
+                            <input type="number" id="sale-quantity" min="1" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sale-price">Prix de vente (FCFA) *</label>
+                            <input type="number" id="sale-price" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sale-client-name">Nom du client</label>
+                            <input type="text" id="sale-client-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="sale-client-email">Email du client</label>
+                            <input type="email" id="sale-client-email">
+                        </div>
+                        <div class="form-group">
+                            <label for="sale-client-phone">Téléphone du client</label>
+                            <input type="tel" id="sale-client-phone">
+                        </div>
+                        <div class="form-group span-2">
+                            <label for="sale-notes">Notes</label>
+                            <textarea id="sale-notes" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i data-lucide="save"></i> Enregistrer la vente
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="sales-list-section">
+                <h2>Historique des ventes</h2>
+                <div id="sales-list" class="sales-list">
+                    <!-- Les ventes seront affichées ici -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/ventes.js"></script>
+    <script type="module" src="js/ui.js"></script>
+</body>
+</html>
+

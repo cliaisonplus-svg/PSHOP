@@ -9,10 +9,14 @@ export function generateUUID() {
 }
 
 /**
- * Formate un nombre en devise (EUR).
+ * Formate un nombre en devise (FCFA).
  * @param {number} amount - Le montant à formater.
  * @returns {string}
  */
 export function formatCurrency(amount) {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount || 0);
+    return new Intl.NumberFormat('fr-FR', { 
+        style: 'decimal',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(amount || 0) + ' FCFA';
 }

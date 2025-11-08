@@ -1,0 +1,401 @@
+/* Styles pour le tableau de bord et la gestion des ventes */
+
+/* Photo upload options */
+.photo-upload-options {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.photo-upload-options input[type="file"] {
+    flex: 1;
+}
+
+/* Statistiques principales */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.stat-icon-sales {
+    background: rgba(13, 110, 253, 0.1);
+    color: var(--primary);
+}
+
+.stat-icon-profit {
+    background: rgba(25, 135, 84, 0.1);
+    color: var(--success);
+}
+
+.stat-icon-items {
+    background: rgba(255, 193, 7, 0.1);
+    color: var(--warning);
+}
+
+.stat-icon-transactions {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--danger);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-content h3 {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+/* Section statistiques */
+.stats-section {
+    margin-bottom: 2rem;
+}
+
+.stats-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.month-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.month-stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.month-stat-card.expense-stat {
+    border-left: 4px solid var(--danger);
+}
+
+.expense-amount {
+    color: var(--danger);
+    font-weight: 700;
+}
+
+.month-stat-card h4 {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+/* Graphique */
+.chart-section {
+    margin-bottom: 2rem;
+}
+
+.chart-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.chart-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+}
+
+#sales-chart {
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+}
+
+/* Ventes récentes */
+.recent-sales-section {
+    margin-bottom: 2rem;
+}
+
+.recent-sales-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.recent-sales-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recent-sale-item {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.recent-sale-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.recent-sale-header h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.recent-sale-date {
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.6;
+}
+
+.recent-sale-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.recent-sale-quantity {
+    background: var(--primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.recent-sale-amount {
+    font-weight: 700;
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+.recent-sale-profit {
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* Gestion des ventes */
+.sales-section {
+    margin-bottom: 2rem;
+}
+
+.sales-section h2,
+.sales-list-section h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.sales-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sales-list:empty::before {
+    content: 'Aucune vente enregistrée';
+    text-align: center;
+    padding: 3rem;
+    color: var(--text);
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.sale-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.expense-card {
+    border-left: 4px solid var(--danger);
+}
+
+.expense-supplier {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin-top: 0.25rem;
+}
+
+.expense-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.btn-icon i {
+    width: 18px;
+    height: 18px;
+}
+
+.sale-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sale-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.sale-date {
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.6;
+}
+
+.sale-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.sale-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+.detail-value {
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.detail-value.highlight {
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.detail-value.profit {
+    color: var(--success);
+    font-size: 1.1rem;
+}
+
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text);
+    opacity: 0.6;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Mode présentation */
+.presentation-mode .product-card__price-partner,
+.presentation-mode .product-card__margin {
+    display: none;
+}
+
+.presentation-mode .product-card__price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sale-details {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-sale-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chart-container {
+        padding: 1rem;
+    }
+}
+
