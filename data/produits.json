@@ -1,0 +1,40 @@
+[
+  {
+    "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "nom": "ASUS ROG Strix G16",
+    "categorie": "laptop",
+    "description": "PC portable gaming puissant avec écran 16 pouces 165Hz, idéal pour les jeux AAA et la création de contenu.",
+    "prixPartenaire": 1450.50,
+    "prixRevente": 1799.99,
+    "marge": 349.49,
+    "stock": 8,
+    "photos": [],
+    "specifications": {
+      "processeur": "Intel Core i7-13650HX",
+      "ram": "16 Go DDR5",
+      "stockage": "1 To SSD NVMe",
+      "carteGraphique": "NVIDIA GeForce RTX 4060",
+      "ecran": "16\" QHD+ (2560x1600) 165Hz"
+    },
+    "dateAjout": "2025-10-26T10:00:00Z"
+  },
+  {
+    "id": "b2c3d4e5-f6a7-8901-2345-67890abcdef1",
+    "nom": "Logitech MX Master 3S",
+    "categorie": "accessoire",
+    "description": "Souris sans fil ergonomique pour la productivité, avec suivi sur verre et défilement MagSpeed.",
+    "prixPartenaire": 75.00,
+    "prixRevente": 109.99,
+    "marge": 34.99,
+    "stock": 42,
+    "photos": [],
+    "specifications": {
+      "processeur": "",
+      "ram": "",
+      "stockage": "",
+      "carteGraphique": "",
+      "ecran": ""
+    },
+    "dateAjout": "2025-11-01T14:30:00Z"
+  }
+]

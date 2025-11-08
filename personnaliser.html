@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnaliser le Thème</title>
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Personnaliser le Thème</h1>
+            <div class="header-actions">
+                <a href="/" class="btn btn-secondary">
+                    <i data-lucide="arrow-left"></i> Retour à l'accueil
+                </a>
+            </div>
+        </header>
+
+        <main class="personalize-layout">
+            <div class="card">
+                <h2>Couleurs de l'interface</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="primary-color">Couleur Primaire</label>
+                        <input type="color" id="primary-color">
+                    </div>
+                    <div class="form-group">
+                        <label for="secondary-color">Couleur Secondaire</label>
+                        <input type="color" id="secondary-color">
+                    </div>
+                    <div class="form-group">
+                        <label for="bg-color">Couleur de Fond</label>
+                        <input type="color" id="bg-color">
+                    </div>
+                    <div class="form-group">
+                        <label for="text-color">Couleur du Texte</label>
+                        <input type="color" id="text-color">
+                    </div>
+                     <div class="form-group">
+                        <label for="card-bg-color">Fond des Cartes</label>
+                        <input type="color" id="card-bg-color">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Mode d'affichage</h2>
+                <div class="theme-switcher">
+                    <button id="theme-toggle" class="btn btn-secondary">
+                        <i data-lucide="sun"></i> / <i data-lucide="moon"></i> Changer de mode
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Actions</h2>
+                <div class="form-actions">
+                    <button id="reset-theme" class="btn btn-danger">
+                        <i data-lucide="refresh-cw"></i> Réinitialiser les couleurs
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="/js/ui.js"></script>
+</body>
+</html>

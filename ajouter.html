@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter/Modifier un Produit</title>
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="form-title">Ajouter un nouveau produit</h1>
+            <div class="header-actions">
+                <a href="/" class="btn btn-secondary">
+                    <i data-lucide="arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </header>
+
+        <main>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nom">Nom du produit *</label>
+                        <input type="text" id="nom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categorie">Catégorie *</label>
+                        <select id="categorie" required>
+                            <option value="">Choisir une catégorie...</option>
+                            <option value="laptop">Laptop</option>
+                            <option value="desktop">PC de bureau</option>
+                            <option value="composant">Composant</option>
+                            <option value="accessoire">Accessoire</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group span-2">
+                        <label for="description">Description</label>
+                        <textarea id="description" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prixPartenaire">Prix Partenaire (€)</label>
+                        <input type="number" id="prixPartenaire" step="0.01" min="0" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prixRevente">Prix de Revente (€) *</label>
+                        <input type="number" id="prixRevente" step="0.01" min="0" required value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marge">Marge (€)</label>
+                        <input type="text" id="marge" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock">Stock</label>
+                        <input type="number" id="stock" min="0" value="0">
+                    </div>
+
+                    <div class="form-group span-2">
+                        <label for="photos">Photos (3 à 6 images) *</label>
+                        <input type="file" id="photos" multiple accept="image/*">
+                        <div id="photos-preview" class="photos-preview"></div>
+                    </div>
+
+                    <fieldset class="form-group span-2">
+                        <legend>Spécifications Techniques</legend>
+                        <div class="spec-grid">
+                            <div class="form-group">
+                                <label for="spec-processeur">Processeur</label>
+                                <input type="text" id="spec-processeur">
+                            </div>
+                            <div class="form-group">
+                                <label for="spec-ram">RAM</label>
+                                <input type="text" id="spec-ram">
+                            </div>
+                            <div class="form-group">
+                                <label for="spec-stockage">Stockage</label>
+                                <input type="text" id="spec-stockage">
+                            </div>
+                            <div class="form-group">
+                                <label for="spec-carteGraphique">Carte Graphique</label>
+                                <input type="text" id="spec-carteGraphique">
+                            </div>
+                             <div class="form-group">
+                                <label for="spec-ecran">Écran</label>
+                                <input type="text" id="spec-ecran">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i data-lucide="save"></i> Enregistrer le produit
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script type="module" src="/js/produit.js"></script>
+    <script type="module" src="/js/ui.js"></script>
+</body>
+</html>

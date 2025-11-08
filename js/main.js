@@ -1,0 +1,125 @@
+import { loadProducts, deleteProductById, saveProducts } from './storage.js';
+import { formatCurrency } from './utils.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const productGrid = document.getElementById('product-grid');
+    const searchBar = document.getElementById('search-bar');
+    const categoryFilter = document.getElementById('category-filter');
+    const priceMinFilter = document.getElementById('price-min-filter');
+    const priceMaxFilter = document.getElementById('price-max-filter');
+    const exportBtn = document.getElementById('export-json');
+    const importBtn = document.getElementById('import-json');
+    const importLabel = document.querySelector('label[for="import-json"]');
+
+    let allProducts = [];
+
+    async function renderProducts(products) {
+        if (!productGrid) return;
+        productGrid.innerHTML = '';
+        if (products.length === 0) {
+            productGrid.innerHTML = '<p>Aucun produit trouvé. <a href="/ajouter.html">Ajoutez-en un !</a></p>';
+            return;
+        }
+
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <img src="${product.photos && product.photos.length > 0 ? product.photos[0] : 'https://img-wrapper.vercel.app/image?url=https://placehold.co/300x200/161b22/c9d1d9/png?text=Produit'}" alt="${product.nom}" class="product-card__image">
+                <div class="product-card__content">
+                    <h3 class="product-card__title">${product.nom}</h3>
+                    <p class="product-card__category">${product.categorie}</p>
+                    <p class="product-card__margin">Marge: ${formatCurrency(product.marge)}</p>
+                    <p class="product-card__price">${formatCurrency(product.prixRevente)}</p>
+                </div>
+                <div class="product-card__actions">
+                    <a href="/produit.html?id=${product.id}" class="btn btn-secondary"><i data-lucide="eye"></i> Voir</a>
+                    <a href="/ajouter.html?id=${product.id}" class="btn btn-secondary"><i data-lucide="edit"></i> Éditer</a>
+                    <button class="btn btn-danger delete-btn" data-id="${product.id}"><i data-lucide="trash-2"></i> Suppr.</button>
+                </div>
+            `;
+            productGrid.appendChild(card);
+        });
+
+        // Add event listeners for delete buttons
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const id = e.currentTarget.dataset.id;
+                if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+                    await deleteProductById(id);
+                    await refreshProductList();
+                }
+            });
+        });
+    }
+
+    function filterAndSortProducts() {
+        const searchTerm = searchBar.value.toLowerCase();
+        const category = categoryFilter.value;
+        const minPrice = parseFloat(priceMinFilter.value) || 0;
+        const maxPrice = parseFloat(priceMaxFilter.value) || Infinity;
+
+        const filtered = allProducts.filter(p => {
+            const nameMatch = p.nom.toLowerCase().includes(searchTerm);
+            const categoryMatch = category === 'all' || p.categorie === category;
+            const priceMatch = p.prixRevente >= minPrice && p.prixRevente <= maxPrice;
+            return nameMatch && categoryMatch && priceMatch;
+        });
+
+        renderProducts(filtered);
+    }
+    
+    async function refreshProductList() {
+        allProducts = await loadProducts();
+        filterAndSortProducts();
+    }
+    
+    // Initial load
+    refreshProductList();
+
+    // Event listeners for filters
+    [searchBar, categoryFilter, priceMinFilter, priceMaxFilter].forEach(el => {
+        el.addEventListener('input', filterAndSortProducts);
+    });
+
+    // Export functionality
+    exportBtn.addEventListener('click', async () => {
+        const products = await loadProducts();
+        const dataStr = JSON.stringify(products, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = 'produits.json';
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    });
+
+    // Import functionality
+    importLabel.addEventListener('click', () => importBtn.click());
+    importBtn.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const importedProducts = JSON.parse(e.target.result);
+                    if(Array.isArray(importedProducts)) {
+                       if (confirm('Voulez-vous remplacer votre catalogue actuel par celui-ci ?')) {
+                            saveProducts(importedProducts);
+                            await refreshProductList();
+                            alert('Importation réussie !');
+                       }
+                    } else {
+                        throw new Error("Le fichier JSON n'est pas un tableau de produits.");
+                    }
+                } catch (error) {
+                    alert('Erreur lors de l\'importation du fichier. Assurez-vous que le format est correct.');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+});

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion de Produits Informatiques</title>
+    <meta name="description" content="Application pour gérer un catalogue de produits informatiques.">
+    <meta property="og:title" content="Gestion de Produits Informatiques">
+    <meta property="og:description" content="Application pour gérer un catalogue de produits informatiques.">
+    <meta property="og:image" content="https://i.ibb.co/67X3xfS/default-preview.png">
+    <meta property="og:image:alt" content="Aperçu de l'application de gestion de produits">
+    <meta name="twitter:title" content="Gestion de Produits Informatiques">
+    <meta name="twitter:description" content="Application pour gérer un catalogue de produits informatiques.">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/grid.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Catalogue Produits</h1>
+            <div class="header-actions">
+                <input type="search" id="search-bar" placeholder="Rechercher par nom...">
+                <a href="/ajouter.html" class="btn btn-primary">
+                    <i data-lucide="plus-circle"></i> Ajouter un produit
+                </a>
+                <a href="/personnaliser.html" class="btn btn-secondary">
+                    <i data-lucide="palette"></i> Personnaliser
+                </a>
+            </div>
+        </header>
+
+        <aside class="filters">
+            <h3>Filtres</h3>
+            <div class="filter-group">
+                <label for="category-filter">Catégorie</label>
+                <select id="category-filter">
+                    <option value="all">Toutes</option>
+                    <option value="laptop">Laptops</option>
+                    <option value="desktop">PC de bureau</option>
+                    <option value="composant">Composants</option>
+                    <option value="accessoire">Accessoires</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="price-min-filter">Prix Min</label>
+                <input type="number" id="price-min-filter" placeholder="0">
+            </div>
+            <div class="filter-group">
+                <label for="price-max-filter">Prix Max</label>
+                <input type="number" id="price-max-filter" placeholder="5000">
+            </div>
+             <div class="filter-group">
+                <button id="export-json" class="btn btn-secondary full-width"><i data-lucide="download"></i> Exporter en JSON</button>
+            </div>
+            <div class="filter-group">
+                <label for="import-json" class="btn btn-secondary full-width"><i data-lucide="upload"></i> Importer un JSON</label>
+                <input type="file" id="import-json" accept=".json" style="display: none;">
+            </div>
+        </aside>
+
+        <main id="product-grid">
+            <!-- Les cartes de produits seront injectées ici par JS -->
+        </main>
+    </div>
+
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/ui.js"></script>
+</body>
+</html>

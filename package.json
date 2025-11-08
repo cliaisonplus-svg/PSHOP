@@ -1,0 +1,17 @@
+{
+  "name": "gestion-produits-informatique",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "lucide": "^0.378.0"
+  }
+}

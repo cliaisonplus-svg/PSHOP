@@ -1,0 +1,30 @@
+:root {
+  /* Couleurs par défaut (Thème clair) */
+  --primary: #0d6efd;
+  --secondary: #6c757d;
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #0dcaf0;
+
+  --bg: #f8f9fa;
+  --text: #212529;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --input-bg: #fff;
+}
+
+.dark-mode {
+  --primary: #2b8aff;
+  --secondary: #8b949e;
+  --success: #238636;
+  --danger: #da3633;
+  --warning: #e3b341;
+  --info: #31b5d1;
+
+  --bg: #0d1117;
+  --text: #c9d1d9;
+  --card-bg: #161b22;
+  --border-color: #30363d;
+  --input-bg: #0d1117;
+}
