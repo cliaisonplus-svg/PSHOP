@@ -6,12 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "node scripts/postinstall.js || true"
   },
   "devDependencies": {
     "vite": "^5.2.0"
   },
   "dependencies": {
     "lucide": "^0.378.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
