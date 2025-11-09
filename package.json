@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:verify": "vite build && node scripts/verify-build.js",
     "preview": "vite preview",
-    "postinstall": "node scripts/postinstall.js || true"
+    "postinstall": "node scripts/postinstall.js || true",
+    "vercel-build": "yarn build"
   },
   "devDependencies": {
     "vite": "^5.2.0"

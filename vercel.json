@@ -1,5 +1,6 @@
 {
-  "buildCommand": "yarn build",
+  "version": 2,
+  "buildCommand": "yarn vercel-build",
   "outputDirectory": "dist",
   "installCommand": "yarn install --frozen-lockfile",
   "rewrites": [
