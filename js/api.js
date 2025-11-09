@@ -88,16 +88,55 @@ async function apiRequest(endpoint, options = {}) {
     
     try {
         const response = await fetch(url, config);
-        const data = await response.json();
+        
+        // Lire la réponse comme texte d'abord (pour pouvoir la réutiliser)
+        const responseText = await response.text();
+        
+        // Vérifier le type de contenu
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+            try {
+                data = JSON.parse(responseText);
+            } catch (jsonError) {
+                console.error('Erreur de parsing JSON:', jsonError);
+                console.error('Réponse reçue (texte):', responseText.substring(0, 500));
+                throw new Error('Réponse invalide du serveur. Vérifiez que l\'API PHP fonctionne correctement. Consultez la console pour plus de détails.');
+            }
+        } else {
+            // Si ce n'est pas du JSON, afficher le texte
+            console.error('Réponse non-JSON reçue:', responseText.substring(0, 500));
+            throw new Error(`Erreur serveur (${response.status}): ${responseText.substring(0, 100)}`);
+        }
         
         if (!response.ok) {
-            throw new Error(data.message || 'Erreur API');
+            const errorMessage = data.message || data.error || `Erreur ${response.status}: ${response.statusText}`;
+            console.error('Erreur API:', {
+                status: response.status,
+                statusText: response.statusText,
+                message: errorMessage,
+                data: data,
+                url: url
+            });
+            throw new Error(errorMessage);
         }
         
         return data;
     } catch (error) {
-        console.error('Erreur API:', error);
-        throw error;
+        // Si c'est déjà une Error avec un message, la relancer
+        if (error instanceof Error) {
+            console.error('Erreur API:', {
+                message: error.message,
+                url: url,
+                method: config.method,
+                stack: error.stack
+            });
+            throw error;
+        }
+        // Sinon, créer une nouvelle Error
+        console.error('Erreur API (inconnue):', error);
+        throw new Error(error.message || 'Une erreur est survenue lors de la communication avec le serveur');
     }
 }
 

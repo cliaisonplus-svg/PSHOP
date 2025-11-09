@@ -99,11 +99,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         } catch (error) {
-            console.error('Erreur:', error);
-            showNotification('Une erreur est survenue', 'error');
+            console.error('Erreur lors de l\'inscription:', error);
+            const errorMessage = error.message || 'Une erreur est survenue lors de la création du compte. Veuillez réessayer.';
+            showNotification(errorMessage, 'error');
             submitBtn.disabled = false;
             submitBtn.classList.remove('loading');
             submitBtnText.textContent = 'Créer mon compte';
+            
+            // Afficher plus de détails dans la console pour le débogage
+            if (error.stack) {
+                console.error('Stack trace:', error.stack);
+            }
         }
     });
 

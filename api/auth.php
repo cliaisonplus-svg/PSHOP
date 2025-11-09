@@ -140,6 +140,9 @@ function handleLogin($data) {
 // Gérer l'inscription
 function handleRegister($data) {
     try {
+        // Log des données reçues (sans le mot de passe)
+        error_log('Register attempt - Username: ' . ($data['username'] ?? 'N/A'));
+        
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
         $adminCode = $data['adminCode'] ?? '';
@@ -168,49 +171,109 @@ function handleRegister($data) {
             return;
         }
         
-        $pdo = getDBConnection();
+        // Connexion à la base de données
+        try {
+            $pdo = getDBConnection();
+        } catch (Exception $dbError) {
+            error_log('Database connection error: ' . $dbError->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Erreur de connexion à la base de données. Vérifiez que MySQL est démarré.',
+                'error' => $dbError->getMessage()
+            ]);
+            return;
+        }
         
         // Vérifier si le nom d'utilisateur existe déjà
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
-        $stmt->execute([strtolower(trim($username))]);
-        if ($stmt->fetch()) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Ce nom d\'utilisateur est déjà utilisé']);
+        try {
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+            $stmt->execute([strtolower(trim($username))]);
+            if ($stmt->fetch()) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Ce nom d\'utilisateur est déjà utilisé']);
+                return;
+            }
+        } catch (PDOException $e) {
+            error_log('Error checking username: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Erreur lors de la vérification du nom d\'utilisateur',
+                'error' => $e->getMessage()
+            ]);
             return;
         }
         
         // Créer l'utilisateur
-        $userId = 'user-' . time() . '-' . uniqid();
-        $hashedPassword = hashPassword($password);
-        
-        $stmt = $pdo->prepare("INSERT INTO users (id, username, password, name, created_at) VALUES (?, ?, ?, ?, NOW())");
-        $stmt->execute([$userId, strtolower(trim($username)), $hashedPassword, trim($username)]);
+        try {
+            $userId = 'user-' . time() . '-' . uniqid();
+            $hashedPassword = hashPassword($password);
+            
+            $stmt = $pdo->prepare("INSERT INTO users (id, username, password, name, created_at) VALUES (?, ?, ?, ?, NOW())");
+            $stmt->execute([$userId, strtolower(trim($username)), $hashedPassword, trim($username)]);
+            
+            error_log('User created successfully: ' . $userId);
+        } catch (PDOException $e) {
+            error_log('Error creating user: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Erreur lors de la création de l\'utilisateur',
+                'error' => $e->getMessage()
+            ]);
+            return;
+        }
         
         // Créer une session
-        $sessionId = 'session-' . uniqid() . '-' . time();
-        $expiresAt = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        $sessionId = null;
+        $expiresAt = null;
         
-        $stmt = $pdo->prepare("INSERT INTO sessions (id, user_id, username, created_at, expires_at) VALUES (?, ?, ?, NOW(), ?)");
-        $stmt->execute([$sessionId, $userId, strtolower(trim($username)), $expiresAt]);
+        try {
+            $sessionId = 'session-' . uniqid() . '-' . time();
+            $expiresAt = date('Y-m-d H:i:s', strtotime('+24 hours'));
+            
+            $stmt = $pdo->prepare("INSERT INTO sessions (id, user_id, username, created_at, expires_at) VALUES (?, ?, ?, NOW(), ?)");
+            $stmt->execute([$sessionId, $userId, strtolower(trim($username)), $expiresAt]);
+            
+            error_log('Session created successfully: ' . $sessionId);
+        } catch (PDOException $e) {
+            error_log('Error creating session: ' . $e->getMessage());
+            // Même si la session échoue, l'utilisateur est créé
+            // On continuera sans session (l'utilisateur devra se connecter)
+        }
         
-        echo json_encode([
+        // Préparer la réponse
+        $response = [
             'success' => true,
             'message' => 'Inscription réussie. Vous êtes maintenant connecté.',
-            'session' => [
-                'id' => $sessionId,
-                'userId' => $userId,
-                'username' => strtolower(trim($username)),
-                'expiresAt' => $expiresAt
-            ],
             'user' => [
                 'id' => $userId,
                 'username' => strtolower(trim($username)),
                 'name' => trim($username)
             ]
-        ]);
+        ];
+        
+        // Ajouter la session si elle a été créée
+        if ($sessionId && $expiresAt) {
+            $response['session'] = [
+                'id' => $sessionId,
+                'userId' => $userId,
+                'username' => strtolower(trim($username)),
+                'expiresAt' => $expiresAt
+            ];
+        }
+        
+        echo json_encode($response);
     } catch (Exception $e) {
+        error_log('Unexpected error in handleRegister: ' . $e->getMessage());
+        error_log('Stack trace: ' . $e->getTraceAsString());
         http_response_code(500);
-        echo json_encode(['success' => false, 'message' => 'Erreur: ' . $e->getMessage()]);
+        echo json_encode([
+            'success' => false, 
+            'message' => 'Une erreur inattendue s\'est produite: ' . $e->getMessage(),
+            'error' => $e->getMessage()
+        ]);
     }
 }
 
