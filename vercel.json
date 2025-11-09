@@ -2,7 +2,44 @@
   "buildCommand": "yarn build",
   "outputDirectory": "dist",
   "installCommand": "yarn install --frozen-lockfile",
-  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/register",
+      "destination": "/register.html"
+    },
+    {
+      "source": "/reset-password",
+      "destination": "/reset-password.html"
+    },
+    {
+      "source": "/ajouter",
+      "destination": "/ajouter.html"
+    },
+    {
+      "source": "/produit",
+      "destination": "/produit.html"
+    },
+    {
+      "source": "/personnaliser",
+      "destination": "/personnaliser.html"
+    },
+    {
+      "source": "/ventes",
+      "destination": "/ventes.html"
+    },
+    {
+      "source": "/depenses",
+      "destination": "/depenses.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard.html"
+    }
+  ],
   "env": {
     "NPM_CONFIG_OPTIONAL": "true"
   }
