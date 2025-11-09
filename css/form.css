@@ -50,14 +50,17 @@
     gap: 1rem;
     align-items: stretch;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
 }
 
 .photo-upload-options input[type="file"] {
     flex: 1;
+    min-width: 200px;
 }
 
 .photo-upload-options #camera-btn {
     white-space: nowrap;
+    min-height: 44px;
 }
 
 .photos-preview {
@@ -109,8 +112,10 @@
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: 50%;
     border: none;
     background: var(--danger);
@@ -121,14 +126,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.2s ease, transform 0.2s ease;
     z-index: 10;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.photos-preview > div:hover .photo-remove-btn {
-    opacity: 1;
+@media (min-width: 769px) {
+    .photos-preview > div:hover .photo-remove-btn {
+        opacity: 1;
+    }
+
+    .photo-remove-btn {
+        opacity: 0;
+    }
 }
 
 .photo-remove-btn:hover {
@@ -162,4 +173,112 @@ legend {
     justify-content: flex-end;
     gap: 1rem;
     margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Responsive pour les formulaires */
+@media (max-width: 768px) {
+    #product-form {
+        padding: 1rem;
+        gap: 1.5rem;
+        border-radius: 8px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .form-group.span-2 {
+        grid-column: span 1;
+    }
+
+    .form-group {
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .spec-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .photo-upload-options {
+        flex-direction: column;
+    }
+
+    .photo-upload-options input[type="file"],
+    .photo-upload-options #camera-btn {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .photos-preview {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.75rem;
+        padding: 0.75rem;
+        min-height: 120px;
+    }
+
+    .photo-remove-btn {
+        opacity: 1;
+        width: 36px;
+        height: 36px;
+        min-width: 44px;
+        min-height: 44px;
+        top: 0.25rem;
+        right: 0.25rem;
+    }
+
+    fieldset {
+        padding: 1rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 480px) {
+    #product-form {
+        padding: 0.75rem;
+        gap: 1rem;
+    }
+
+    .form-group label {
+        font-size: 0.85rem;
+    }
+
+    .photos-preview {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Mode tactile */
+@media (hover: none) and (pointer: coarse) {
+    .photo-remove-btn {
+        opacity: 1;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .photos-preview > div:hover {
+        transform: none;
+    }
+
+    .photos-preview > div:active {
+        transform: scale(0.98);
+    }
 }

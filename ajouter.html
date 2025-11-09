@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <title>Ajouter/Modifier un Produit</title>
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/style.css">
@@ -43,6 +43,9 @@
                 <a href="personnaliser.html" class="nav-link">
                     <i data-lucide="palette"></i> <span>Personnaliser</span>
                 </a>
+                <button id="logout-btn" class="nav-link" style="background: transparent; border: none; cursor: pointer;">
+                    <i data-lucide="log-out"></i> <span>Déconnexion</span>
+                </button>
             </nav>
         </header>
 
@@ -95,13 +98,13 @@
                     <div class="form-group span-2">
                         <label for="photos">Photos (3 à 6 images) *</label>
                         <div class="photo-upload-options">
-                            <input type="file" id="photos" multiple accept="image/*" capture="environment">
+                            <input type="file" id="photos" multiple accept="image/*,image/jpeg,image/jpg,image/png,image/webp">
                             <button type="button" id="camera-btn" class="btn btn-secondary">
                                 <i data-lucide="camera"></i> Prendre une photo
                             </button>
                         </div>
                         <div id="photos-preview" class="photos-preview"></div>
-                        <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
+                        <input type="file" id="camera-input" accept="image/*,image/jpeg,image/jpg,image/png,image/webp" capture="environment" style="display: none;">
                     </div>
 
                     <fieldset class="form-group span-2">
@@ -141,6 +144,7 @@
     </div>
 
     <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
     <script type="module" src="js/produit.js"></script>
     <script type="module" src="js/ui.js"></script>
 </body>

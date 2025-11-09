@@ -144,6 +144,10 @@
     transition: all 0.3s ease;
 }
 
+.sale-details-modal {
+    max-width: 700px;
+}
+
 .modal.show {
     opacity: 1;
     transform: scale(1);
@@ -152,6 +156,9 @@
 .modal-header {
     padding: 20px 24px;
     border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modal-title {
@@ -159,6 +166,32 @@
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text);
+    opacity: 0.6;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    opacity: 1;
+    background: var(--bg);
 }
 
 .modal-body {
@@ -171,6 +204,147 @@
     margin: 0;
     color: var(--text);
     line-height: 1.6;
+}
+
+/* Styles pour les détails de vente */
+.sale-details-body {
+    padding: 0;
+}
+
+.sale-details-section {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sale-details-section:last-child {
+    border-bottom: none;
+}
+
+.sale-details-section h4 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-subtitle {
+    font-size: 0.85rem;
+    font-weight: 400;
+    opacity: 0.7;
+    margin-left: auto;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detail-item.span-2 {
+    grid-column: span 2;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.detail-value.highlight {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.detail-value.profit {
+    color: var(--success);
+}
+
+.associated-expenses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.expense-item {
+    padding: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    border-left: 4px solid var(--danger);
+}
+
+.expense-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.expense-category {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.expense-date {
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+.expense-item-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.expense-amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--danger);
+}
+
+.expense-supplier {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+.expense-description {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.8;
+    margin: 0;
+    font-style: italic;
+}
+
+.expenses-summary {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border-color);
+    text-align: right;
+    color: var(--text);
+    font-size: 1.1rem;
 }
 
 .modal-footer {
@@ -188,23 +362,200 @@
         right: 10px;
         left: 10px;
         max-width: none;
+        bottom: auto;
     }
 
     .notification {
         min-width: auto;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .notification-message {
+        font-size: 13px;
+    }
+
+    .notification-close {
+        width: 24px;
+        height: 24px;
+        font-size: 18px;
+    }
+
+    .modal-overlay {
+        padding: 10px;
+        align-items: flex-end;
     }
 
     .modal {
         max-width: 100%;
-        margin: 10px;
+        margin: 0;
+        max-height: 90vh;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .sale-details-modal {
+        max-width: 100%;
+    }
+
+    .modal-header {
+        padding: 16px;
+        position: sticky;
+        top: 0;
+        background: var(--card-bg);
+        z-index: 1;
+    }
+
+    .modal-title {
+        font-size: 1.1rem;
+    }
+
+    .modal-close-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .modal-body {
+        padding: 16px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sale-details-section {
+        padding: 16px;
+    }
+
+    .sale-details-section h4 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .detail-item {
+        gap: 0.25rem;
+    }
+
+    .detail-item.span-2 {
+        grid-column: span 1;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+    }
+
+    .detail-value {
+        font-size: 0.95rem;
+    }
+
+    .detail-value.highlight {
+        font-size: 1.1rem;
+    }
+
+    .associated-expenses-list {
+        max-height: 300px;
+        gap: 0.75rem;
+    }
+
+    .expense-item {
+        padding: 0.75rem;
+    }
+
+    .expense-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .expense-category {
+        font-size: 0.9rem;
+    }
+
+    .expense-date {
+        font-size: 0.8rem;
+    }
+
+    .expense-amount {
+        font-size: 1rem;
+    }
+
+    .expenses-summary {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        font-size: 1rem;
+        text-align: left;
     }
 
     .modal-footer {
         flex-direction: column;
+        padding: 12px 16px;
+        position: sticky;
+        bottom: 0;
+        background: var(--card-bg);
+        border-top: 1px solid var(--border-color);
     }
 
     .modal-footer .btn {
         width: 100%;
+        min-height: 44px;
+    }
+
+    .section-subtitle {
+        display: block;
+        margin-top: 0.5rem;
+        margin-left: 0;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .notification {
+        padding: 10px;
+    }
+
+    .notification-message {
+        font-size: 12px;
+    }
+
+    .modal-header {
+        padding: 12px;
+    }
+
+    .modal-title {
+        font-size: 1rem;
+    }
+
+    .modal-body {
+        padding: 12px;
+    }
+
+    .sale-details-section {
+        padding: 12px;
+    }
+
+    .modal-footer {
+        padding: 10px 12px;
+    }
+}
+
+/* Mode tactile */
+@media (hover: none) and (pointer: coarse) {
+    .modal-close-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .notification-close {
+        min-width: 32px;
+        min-height: 32px;
     }
 }
 

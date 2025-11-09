@@ -6,10 +6,12 @@
     gap: 1rem;
     align-items: center;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
 }
 
 .photo-upload-options input[type="file"] {
     flex: 1;
+    min-width: 200px;
 }
 
 /* Statistiques principales */
@@ -71,8 +73,14 @@
     color: var(--danger);
 }
 
+.stat-icon-expenses {
+    background: rgba(108, 117, 125, 0.1);
+    color: var(--secondary);
+}
+
 .stat-content {
     flex: 1;
+    min-width: 0;
 }
 
 .stat-content h3 {
@@ -81,6 +89,7 @@
     opacity: 0.7;
     margin-bottom: 0.5rem;
     font-weight: 500;
+    word-wrap: break-word;
 }
 
 .stat-value {
@@ -88,6 +97,8 @@
     font-weight: 700;
     color: var(--text);
     margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Section statistiques */
@@ -98,32 +109,26 @@
 .stats-section h2 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
+    color: var(--text);
 }
 
+/* Statistiques du mois */
 .month-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .month-stat-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
 }
 
-.month-stat-card.expense-stat {
-    border-left: 4px solid var(--danger);
-}
-
-.expense-amount {
-    color: var(--danger);
-    font-weight: 700;
-}
-
-.month-stat-card h4 {
+.month-stat-card h3 {
     font-size: 0.9rem;
     color: var(--text);
     opacity: 0.7;
@@ -131,40 +136,43 @@
     font-weight: 500;
 }
 
+.month-stat-card h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.month-stat-card.expense-stat h4 {
+    color: var(--danger);
+}
+
+.month-stat-card.profit-stat h4 {
+    color: var(--success);
+}
+
 /* Graphique */
-.chart-section {
-    margin-bottom: 2rem;
-}
-
-.chart-section h2 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
 .chart-container {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 1.5rem;
-    overflow-x: auto;
-}
-
-#sales-chart {
-    width: 100%;
-    max-width: 100%;
-    height: 300px;
-}
-
-/* Ventes récentes */
-.recent-sales-section {
     margin-bottom: 2rem;
 }
 
-.recent-sales-section h2 {
+.chart-container h3 {
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text);
 }
 
+.chart-container canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Ventes récentes */
 .recent-sales-list {
     display: flex;
     flex-direction: column;
@@ -172,72 +180,84 @@
 }
 
 .recent-sale-item {
-    padding: 1rem;
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.recent-sale-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .recent-sale-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .recent-sale-header h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
     margin: 0;
-    font-size: 1rem;
+    flex: 1;
 }
 
 .recent-sale-date {
     font-size: 0.85rem;
     color: var(--text);
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 .recent-sale-info {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .recent-sale-quantity {
-    background: var(--primary);
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
 }
 
 .recent-sale-amount {
-    font-weight: 700;
-    color: var(--text);
     font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
 }
 
 .recent-sale-profit {
+    font-size: 0.9rem;
     color: var(--success);
     font-weight: 600;
 }
 
-/* Gestion des ventes */
-.sales-section {
+.no-data {
+    text-align: center;
+    color: var(--text);
+    opacity: 0.6;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Sections pour les pages de ventes et dépenses */
+.sales-section,
+.sales-list-section {
     margin-bottom: 2rem;
 }
 
 .sales-section h2,
 .sales-list-section h2 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-size: 1.5rem;
-    font-weight: 600;
     color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--border-color);
 }
 
 .sales-list {
@@ -246,78 +266,41 @@
     gap: 1rem;
 }
 
-.sales-list:empty::before {
-    content: 'Aucune vente enregistrée';
-    text-align: center;
-    padding: 3rem;
-    color: var(--text);
-    opacity: 0.5;
-    font-style: italic;
-}
-
 .sale-card {
-    padding: 1.5rem;
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.expense-card {
-    border-left: 4px solid var(--danger);
-}
-
-.expense-supplier {
-    font-size: 0.9rem;
-    color: var(--text);
-    opacity: 0.7;
-    margin-top: 0.25rem;
-}
-
-.expense-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-icon {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0.25rem;
-    color: var(--danger);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.btn-icon:hover {
-    background: rgba(220, 53, 69, 0.1);
-}
-
-.btn-icon i {
-    width: 18px;
-    height: 18px;
+.sale-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .sale-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .sale-header h3 {
-    margin: 0;
     font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+    flex: 1;
 }
 
 .sale-date {
     font-size: 0.85rem;
     color: var(--text);
-    opacity: 0.6;
+    opacity: 0.7;
+    white-space: nowrap;
 }
 
 .sale-details {
@@ -332,70 +315,356 @@
     gap: 0.25rem;
 }
 
-.detail-label {
+.sale-detail-item .detail-label {
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.sale-detail-item .detail-value {
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 500;
+    word-wrap: break-word;
+}
+
+.sale-detail-item .detail-value.highlight {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.sale-detail-item .detail-value.profit {
+    color: var(--success);
+}
+
+/* Dépenses */
+.expense-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--danger);
+}
+
+.expense-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.expense-category {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.expense-date {
     font-size: 0.85rem;
     color: var(--text);
     opacity: 0.7;
 }
 
-.detail-value {
-    font-size: 1rem;
-    color: var(--text);
-    font-weight: 600;
-}
-
-.detail-value.highlight {
-    color: var(--primary);
-    font-size: 1.2rem;
-}
-
-.detail-value.profit {
-    color: var(--success);
-    font-size: 1.1rem;
-}
-
-.no-data {
-    text-align: center;
-    padding: 2rem;
-    color: var(--text);
-    opacity: 0.6;
-}
-
-.dashboard-main {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-/* Mode présentation */
-.presentation-mode .product-card__price-partner,
-.presentation-mode .product-card__margin {
-    display: none;
-}
-
-.presentation-mode .product-card__price {
-    font-size: 1.5rem;
+.expense-amount {
+    font-size: 1.25rem;
     font-weight: 700;
-    color: var(--primary);
+    color: var(--danger);
+    margin-bottom: 0.5rem;
 }
 
-/* Responsive */
+.expense-supplier {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+}
+
+.expense-description {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.8;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.expense-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.btn-icon {
+    padding: 0.5rem;
+    min-width: auto;
+    width: auto;
+    height: auto;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon i {
+    width: 18px;
+    height: 18px;
+}
+
+/* Responsive pour dashboard */
 @media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
-    .sale-details {
+    .stat-card {
+        padding: 1rem;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .stat-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .stat-content h3 {
+        font-size: 0.8rem;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+    }
+
+    .month-stats {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .month-stat-card {
+        padding: 1rem;
+    }
+
+    .month-stat-card h3 {
+        font-size: 0.85rem;
+    }
+
+    .month-stat-card h4 {
+        font-size: 1.1rem;
+    }
+
+    .chart-container {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .chart-container canvas {
+        height: 250px;
+    }
+
+    .recent-sales-list {
+        gap: 0.75rem;
+    }
+
+    .recent-sale-item {
+        padding: 1rem;
+    }
+
+    .recent-sale-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .recent-sale-header h4 {
+        font-size: 1rem;
     }
 
     .recent-sale-info {
         flex-direction: column;
         align-items: flex-start;
+        gap: 0.5rem;
+        width: 100%;
     }
 
-    .chart-container {
+    /* Pages de ventes et dépenses */
+    .sales-section,
+    .sales-list-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .sales-section h2,
+    .sales-list-section h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .sales-list {
+        gap: 0.75rem;
+    }
+
+    .sale-card {
         padding: 1rem;
+    }
+
+    .sale-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .sale-header h3 {
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .sale-details {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .sale-detail-item {
+        gap: 0.25rem;
+    }
+
+    .sale-detail-item .detail-label {
+        font-size: 0.8rem;
+    }
+
+    .sale-detail-item .detail-value {
+        font-size: 0.95rem;
+    }
+
+    .sale-detail-item .detail-value.highlight {
+        font-size: 1.1rem;
+    }
+
+    .expense-card {
+        padding: 1rem;
+    }
+
+    .expense-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .expense-card-header h3 {
+        font-size: 1rem;
+    }
+
+    .expense-amount {
+        font-size: 1.1rem;
+    }
+
+    .expense-actions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 0.75rem;
+    }
+
+    .expense-actions .btn-icon {
+        min-height: 44px;
+        min-width: 44px;
     }
 }
 
+@media (max-width: 480px) {
+    .stats-section h2 {
+        font-size: 1.1rem;
+    }
+
+    .stat-card {
+        padding: 0.75rem;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .stat-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+    }
+
+    .month-stat-card {
+        padding: 0.75rem;
+    }
+
+    .month-stat-card h3 {
+        font-size: 0.8rem;
+    }
+
+    .month-stat-card h4 {
+        font-size: 1rem;
+    }
+
+    .chart-container {
+        padding: 0.75rem;
+    }
+
+    .chart-container canvas {
+        height: 200px;
+    }
+
+    .recent-sale-item {
+        padding: 0.75rem;
+    }
+
+    .sale-card {
+        padding: 0.75rem;
+    }
+
+    .expense-card {
+        padding: 0.75rem;
+    }
+
+    .sales-section h2,
+    .sales-list-section h2 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Mode tactile */
+@media (hover: none) and (pointer: coarse) {
+    .recent-sale-item:hover,
+    .stat-card:hover,
+    .sale-card:hover {
+        transform: none;
+    }
+
+    .recent-sale-item:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+
+    .stat-card:active {
+        transform: scale(0.98);
+    }
+
+    .sale-card:active {
+        transform: scale(0.98);
+    }
+
+    .expense-actions .btn-icon {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}

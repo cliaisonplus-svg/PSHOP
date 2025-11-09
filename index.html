@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
     <title>Gestion de Produits Informatiques</title>
     <meta name="description" content="Application pour gérer un catalogue de produits informatiques.">
     <meta property="og:title" content="Gestion de Produits Informatiques">
@@ -53,6 +53,9 @@
                 <a href="personnaliser.html" class="nav-link">
                     <i data-lucide="palette"></i> <span>Personnaliser</span>
                 </a>
+                <button id="logout-btn" class="nav-link" style="background: transparent; border: none; cursor: pointer;">
+                    <i data-lucide="log-out"></i> <span>Déconnexion</span>
+                </button>
             </nav>
         </header>
 
@@ -91,6 +94,7 @@
     </div>
 
     <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/ui.js"></script>
 </body>

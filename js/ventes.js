@@ -1,4 +1,4 @@
-import { loadProducts, markProductAsSold, loadSales } from './storage.js';
+import { loadProducts, markProductAsSold, loadSales } from './storage-db.js';
 import { formatCurrency } from './utils.js';
 import { showNotification, showConfirm } from './notifications.js';
 import { initIcons } from './ui.js';
@@ -98,27 +98,32 @@ document.addEventListener('DOMContentLoaded', () => {
             saleCard.className = 'sale-card card';
             const saleDate = new Date(sale.date);
             
+            const quantity = sale.quantity || 1;
+            const price = parseFloat(sale.price) || 0;
+            const total = parseFloat(sale.total) || (price * quantity);
+            const profit = parseFloat(sale.profit) || 0;
+            
             saleCard.innerHTML = `
                 <div class="sale-header">
-                    <h3>${sale.productName}</h3>
+                    <h3>${sale.productName || 'Produit sans nom'}</h3>
                     <span class="sale-date">${saleDate.toLocaleDateString('fr-FR')} ${saleDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span>
                 </div>
                 <div class="sale-details">
                     <div class="sale-detail-item">
                         <span class="detail-label">Quantité:</span>
-                        <span class="detail-value">${sale.quantity}</span>
+                        <span class="detail-value">${quantity}</span>
                     </div>
                     <div class="sale-detail-item">
                         <span class="detail-label">Prix unitaire:</span>
-                        <span class="detail-value">${formatCurrency(sale.price)}</span>
+                        <span class="detail-value">${formatCurrency(price || (total / quantity))}</span>
                     </div>
                     <div class="sale-detail-item">
                         <span class="detail-label">Montant total:</span>
-                        <span class="detail-value highlight">${formatCurrency(sale.price * sale.quantity)}</span>
+                        <span class="detail-value highlight">${formatCurrency(total)}</span>
                     </div>
                     <div class="sale-detail-item">
                         <span class="detail-label">Bénéfice:</span>
-                        <span class="detail-value profit">${formatCurrency(sale.profit * sale.quantity)}</span>
+                        <span class="detail-value profit">${formatCurrency(profit)}</span>
                     </div>
                     ${sale.clientName ? `
                         <div class="sale-detail-item">
@@ -133,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     ` : ''}
                     ${sale.notes ? `
-                        <div class="sale-detail-item">
+                        <div class="sale-detail-item span-2">
                             <span class="detail-label">Notes:</span>
                             <span class="detail-value">${sale.notes}</span>
                         </div>

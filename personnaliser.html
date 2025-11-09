@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <title>Personnaliser le Thème</title>
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/style.css">
@@ -43,6 +43,9 @@
                 <a href="personnaliser.html" class="nav-link active">
                     <i data-lucide="palette"></i> <span>Personnaliser</span>
                 </a>
+                <button id="logout-btn" class="nav-link" style="background: transparent; border: none; cursor: pointer;">
+                    <i data-lucide="log-out"></i> <span>Déconnexion</span>
+                </button>
             </nav>
         </header>
 
@@ -94,6 +97,7 @@
     </div>
 
     <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/auth-guard.js"></script>
     <script type="module" src="js/ui.js"></script>
 </body>
 </html>

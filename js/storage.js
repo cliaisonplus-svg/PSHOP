@@ -3,19 +3,45 @@ const THEME_KEY = 'theme';
 const SALES_KEY = 'sales';
 const EXPENSES_KEY = 'expenses';
 
+// Importer getCurrentUserId depuis auth.js de manière dynamique
+async function getCurrentUserId() {
+    try {
+        const authModule = await import('./auth.js');
+        return authModule.getCurrentUserId();
+    } catch (error) {
+        console.error('Erreur lors de l\'importation de auth.js:', error);
+        return null;
+    }
+}
+
 /**
- * Charge les produits depuis le localStorage.
+ * Charge les produits depuis le localStorage pour l'utilisateur actuel.
  * Initialise avec des données par défaut si le localStorage est vide.
  * @returns {Promise<Array>}
  */
 export async function loadProducts() {
-    let products = JSON.parse(localStorage.getItem(PRODUCTS_KEY));
-    if (!products) {
+    const userId = await getCurrentUserId();
+    if (!userId) return [];
+    
+    const allProducts = JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+    
+    // Filtrer les produits par userId
+    let products = allProducts.filter(p => p.userId === userId);
+    
+    // Si aucun produit pour cet utilisateur, initialiser avec les données par défaut
+    if (products.length === 0) {
         try {
             const response = await fetch('data/produits.json');
             if(response.ok) {
-                products = await response.json();
-                saveProducts(products);
+                const defaultProducts = await response.json();
+                // Ajouter userId à chaque produit
+                products = defaultProducts.map(p => ({
+                    ...p,
+                    userId: userId
+                }));
+                // Sauvegarder tous les produits (y compris ceux des autres utilisateurs)
+                const otherProducts = allProducts.filter(p => p.userId !== userId);
+                localStorage.setItem(PRODUCTS_KEY, JSON.stringify([...otherProducts, ...products]));
             } else {
                 products = [];
             }
@@ -28,11 +54,27 @@ export async function loadProducts() {
 }
 
 /**
- * Sauvegarde la liste des produits dans le localStorage.
+ * Sauvegarde la liste des produits dans le localStorage pour l'utilisateur actuel.
  * @param {Array} products 
  */
-export function saveProducts(products) {
-    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+export async function saveProducts(products) {
+    const userId = await getCurrentUserId();
+    if (!userId) return;
+    
+    // Charger tous les produits
+    const allProducts = JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+    
+    // Supprimer les anciens produits de cet utilisateur
+    const otherProducts = allProducts.filter(p => p.userId !== userId);
+    
+    // Ajouter userId à chaque produit s'il n'existe pas
+    const userProducts = products.map(p => ({
+        ...p,
+        userId: userId
+    }));
+    
+    // Sauvegarder tous les produits
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify([...otherProducts, ...userProducts]));
 }
 
 /**
@@ -51,6 +93,12 @@ export async function getProductById(id) {
  * @returns {Promise<void>}
  */
 export async function saveProduct(product) {
+    const userId = await getCurrentUserId();
+    if (!userId) return;
+    
+    // S'assurer que le produit a le bon userId
+    product.userId = userId;
+    
     const products = await loadProducts();
     const existingIndex = products.findIndex(p => p.id === product.id);
     if (existingIndex > -1) {
@@ -58,58 +106,81 @@ export async function saveProduct(product) {
     } else {
         products.push(product);
     }
-    saveProducts(products);
+    await saveProducts(products);
 }
 
 /**
- * Supprime un produit par son ID.
+ * Supprime un produit par son ID pour l'utilisateur actuel.
  * @param {string} id 
  * @returns {Promise<void>}
  */
 export async function deleteProductById(id) {
-    let products = await loadProducts();
-    products = products.filter(p => p.id !== id);
-    saveProducts(products);
+    const userId = await getCurrentUserId();
+    if (!userId) return;
+    
+    const allProducts = JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+    // Supprimer seulement si c'est un produit de l'utilisateur actuel
+    const filteredProducts = allProducts.filter(p => !(p.id === id && p.userId === userId));
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(filteredProducts));
 }
 
 /**
- * Sauvegarde les préférences de thème.
+ * Sauvegarde les préférences de thème pour l'utilisateur actuel.
  * @param {Object} theme 
  */
-export function saveTheme(theme) {
-    localStorage.setItem(THEME_KEY, JSON.stringify(theme));
+export async function saveTheme(theme) {
+    const userId = await getCurrentUserId();
+    if (!userId) return;
+    
+    // Stocker le thème par utilisateur
+    const themes = JSON.parse(localStorage.getItem(THEME_KEY)) || {};
+    themes[userId] = theme;
+    localStorage.setItem(THEME_KEY, JSON.stringify(themes));
 }
 
 /**
- * Charge les préférences de thème.
- * @returns {Object}
+ * Charge les préférences de thème pour l'utilisateur actuel.
+ * @returns {Promise<Object>}
  */
-export function loadTheme() {
-    return JSON.parse(localStorage.getItem(THEME_KEY)) || {};
+export async function loadTheme() {
+    const userId = await getCurrentUserId();
+    if (!userId) return {};
+    
+    const themes = JSON.parse(localStorage.getItem(THEME_KEY)) || {};
+    return themes[userId] || {};
 }
 
 /**
- * Charge toutes les ventes.
+ * Charge toutes les ventes pour l'utilisateur actuel.
  * @returns {Promise<Array>}
  */
 export async function loadSales() {
-    const sales = JSON.parse(localStorage.getItem(SALES_KEY)) || [];
-    return sales;
+    const userId = await getCurrentUserId();
+    if (!userId) return [];
+    
+    const allSales = JSON.parse(localStorage.getItem(SALES_KEY)) || [];
+    // Filtrer les ventes par userId
+    return allSales.filter(s => s.userId === userId);
 }
 
 /**
- * Sauvegarde une vente.
+ * Sauvegarde une vente pour l'utilisateur actuel.
  * @param {Object} sale 
  * @returns {Promise<void>}
  */
 export async function saveSale(sale) {
-    const sales = await loadSales();
-    sales.push({
+    const userId = await getCurrentUserId();
+    if (!userId) return;
+    
+    const allSales = JSON.parse(localStorage.getItem(SALES_KEY)) || [];
+    const newSale = {
         ...sale,
         id: sale.id || `sale-${Date.now()}`,
-        date: sale.date || new Date().toISOString()
-    });
-    localStorage.setItem(SALES_KEY, JSON.stringify(sales));
+        date: sale.date || new Date().toISOString(),
+        userId: userId
+    };
+    allSales.push(newSale);
+    localStorage.setItem(SALES_KEY, JSON.stringify(allSales));
 }
 
 /**
@@ -198,38 +269,51 @@ export async function getSalesStats() {
 }
 
 /**
- * Charge toutes les dépenses.
+ * Charge toutes les dépenses pour l'utilisateur actuel.
  * @returns {Promise<Array>}
  */
 export async function loadExpenses() {
-    const expenses = JSON.parse(localStorage.getItem(EXPENSES_KEY)) || [];
-    return expenses;
+    const userId = await getCurrentUserId();
+    if (!userId) return [];
+    
+    const allExpenses = JSON.parse(localStorage.getItem(EXPENSES_KEY)) || [];
+    // Filtrer les dépenses par userId
+    return allExpenses.filter(e => e.userId === userId);
 }
 
 /**
- * Sauvegarde une dépense.
+ * Sauvegarde une dépense pour l'utilisateur actuel.
  * @param {Object} expense 
  * @returns {Promise<void>}
  */
 export async function saveExpense(expense) {
-    const expenses = await loadExpenses();
-    expenses.push({
+    const userId = await getCurrentUserId();
+    if (!userId) return;
+    
+    const allExpenses = JSON.parse(localStorage.getItem(EXPENSES_KEY)) || [];
+    const newExpense = {
         ...expense,
         id: expense.id || `expense-${Date.now()}`,
-        date: expense.date || new Date().toISOString()
-    });
-    localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
+        date: expense.date || new Date().toISOString(),
+        userId: userId
+    };
+    allExpenses.push(newExpense);
+    localStorage.setItem(EXPENSES_KEY, JSON.stringify(allExpenses));
 }
 
 /**
- * Supprime une dépense par son ID.
+ * Supprime une dépense par son ID pour l'utilisateur actuel.
  * @param {string} id 
  * @returns {Promise<void>}
  */
 export async function deleteExpenseById(id) {
-    let expenses = await loadExpenses();
-    expenses = expenses.filter(e => e.id !== id);
-    localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
+    const userId = await getCurrentUserId();
+    if (!userId) return;
+    
+    const allExpenses = JSON.parse(localStorage.getItem(EXPENSES_KEY)) || [];
+    // Supprimer seulement si c'est une dépense de l'utilisateur actuel
+    const filteredExpenses = allExpenses.filter(e => !(e.id === id && e.userId === userId));
+    localStorage.setItem(EXPENSES_KEY, JSON.stringify(filteredExpenses));
 }
 
 /**

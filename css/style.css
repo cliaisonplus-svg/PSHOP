@@ -71,6 +71,15 @@ body {
     min-height: 100vh;
 }
 
+/* Style pour les pages d'auth centrées */
+.container:has(main[style*="max-width"]) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "main";
+    align-items: center;
+    justify-content: center;
+}
+
 main {
     grid-area: main;
     min-height: 0;
@@ -145,18 +154,39 @@ header h1 i {
     min-width: 280px;
     flex: 1;
     max-width: 400px;
+    width: 100%;
+}
+
+.search-wrapper input[type="search"] {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.search-wrapper input[type="search"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    background: var(--card-bg);
 }
 
 .search-wrapper .search-icon {
     position: absolute;
-    right: 12px;
+    left: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     color: var(--text);
     opacity: 0.5;
     pointer-events: none;
+    z-index: 1;
 }
 
 .header-actions #search-bar {
@@ -171,6 +201,23 @@ header h1 i {
     flex-wrap: wrap;
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.main-nav::-webkit-scrollbar {
+    height: 4px;
+}
+
+.main-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.main-nav::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 2px;
 }
 
 .nav-link {
@@ -186,6 +233,9 @@ header h1 i {
     color: var(--text);
     background: transparent;
     border: 1px solid transparent;
+    white-space: nowrap;
+    min-height: 40px;
+    flex-shrink: 0;
 }
 
 .nav-link:hover {
@@ -212,10 +262,32 @@ header h1 i {
 .nav-link i {
     width: 18px;
     height: 18px;
+    flex-shrink: 0;
 }
 
 .nav-link .btn-text {
     display: inline;
+}
+
+/* Mode tactile */
+@media (hover: none) and (pointer: coarse) {
+    .nav-link {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+
+    .nav-link:hover {
+        transform: none;
+    }
+
+    .nav-link:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    .search-wrapper input[type="search"] {
+        font-size: 16px; /* Évite le zoom sur iOS */
+    }
 }
 
 aside.filters {

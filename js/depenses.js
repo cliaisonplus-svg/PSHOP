@@ -1,4 +1,4 @@
-import { saveExpense, loadExpenses, deleteExpenseById } from './storage.js';
+import { saveExpense, loadExpenses, deleteExpenseById } from './storage-db.js';
 import { formatCurrency } from './utils.js';
 import { showNotification, showConfirm } from './notifications.js';
 import { initIcons } from './ui.js';

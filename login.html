@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="container" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+        <main style="width: 100%; max-width: 480px; padding: 2rem 1rem;">
+            <div class="card" style="padding: 3rem 2.5rem;">
+                <div class="auth-header-content">
+                    
+                    <h2>Connexion</h2>
+                    <p class="auth-subtitle">Accédez à votre espace de gestion</p>
+                </div>
+                
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            required 
+                            autocomplete="username"
+                            placeholder="Entrez votre nom d'utilisateur"
+                            aria-label="Nom d'utilisateur"
+                            aria-required="true"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" style="display: none;">Mot de passe</label>
+                        <input
+                            type="password"
+                            id="password" 
+                            name="password" 
+                            required 
+                            autocomplete="current-password"
+                            placeholder="Entrez votre mot de passe"
+                            aria-label="Mot de passe"
+                            aria-required="true"
+                        >
+                    </div>
+                    
+                    <a href="reset-password.html" class="auth-link">Mot de passe oublié ?</a>
+
+                    <div class="form-actions" style="flex-direction: column; gap: 1rem;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i data-lucide="log-in"></i> 
+                            <span>Se connecter</span>
+                        </button>
+                        
+                        
+                        
+                        <a href="register.html" class="btn btn-secondary" style="width: 100%; text-decoration: none;">
+                            <i data-lucide="arrow-left"></i> 
+                            <span>Créer un compte</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/notifications.js"></script>
+    <script type="module" src="js/auth-db.js"></script>
+    <script type="module" src="js/login.js"></script>
+    <script type="module" src="js/ui.js"></script>
+</body>
+</html>
+
