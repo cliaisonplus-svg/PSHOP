@@ -96,7 +96,22 @@ export async function login(username, password) {
             };
         }
         
-        const result = await authAPI.login(username, password);
+        const trimmedUsername = username.trim();
+        if (trimmedUsername.length < 3) {
+            return {
+                success: false,
+                message: 'Le nom d\'utilisateur doit contenir au moins 3 caractères'
+            };
+        }
+        
+        if (password.length < 6) {
+            return {
+                success: false,
+                message: 'Le mot de passe doit contenir au moins 6 caractères'
+            };
+        }
+        
+        const result = await authAPI.login(trimmedUsername, password);
         
         if (result.success && result.user) {
             currentUser = result.user;

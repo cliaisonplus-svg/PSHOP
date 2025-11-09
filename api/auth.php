@@ -88,6 +88,9 @@ function hasUsers() {
 // Gérer la connexion
 function handleLogin($data) {
     try {
+        // Log des tentatives de connexion (sans le mot de passe)
+        error_log('Login attempt - Username: ' . ($data['username'] ?? 'N/A'));
+        
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
         
@@ -97,23 +100,87 @@ function handleLogin($data) {
             return;
         }
         
-        $pdo = getDBConnection();
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-        $stmt->execute([strtolower(trim($username))]);
-        $user = $stmt->fetch();
+        // Connexion à la base de données
+        try {
+            $pdo = getDBConnection();
+        } catch (Exception $dbError) {
+            error_log('Database connection error in login: ' . $dbError->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Erreur de connexion à la base de données. Vérifiez que MySQL est démarré.',
+                'error' => $dbError->getMessage()
+            ]);
+            return;
+        }
         
-        if (!$user || !verifyPassword($password, $user['password'])) {
+        // Nettoyer les sessions expirées
+        try {
+            $pdo->exec("DELETE FROM sessions WHERE expires_at < NOW()");
+        } catch (PDOException $e) {
+            error_log('Error cleaning expired sessions: ' . $e->getMessage());
+            // Continuer même si le nettoyage échoue
+        }
+        
+        // Rechercher l'utilisateur
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+            $stmt->execute([strtolower(trim($username))]);
+            $user = $stmt->fetch();
+        } catch (PDOException $e) {
+            error_log('Error fetching user: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Erreur lors de la vérification des identifiants',
+                'error' => $e->getMessage()
+            ]);
+            return;
+        }
+        
+        // Vérifier l'utilisateur et le mot de passe
+        if (!$user) {
+            error_log('Login failed - User not found: ' . strtolower(trim($username)));
             http_response_code(401);
             echo json_encode(['success' => false, 'message' => 'Nom d\'utilisateur ou mot de passe incorrect']);
             return;
         }
         
-        // Créer une session
-        $sessionId = 'session-' . uniqid() . '-' . time();
-        $expiresAt = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        if (!verifyPassword($password, $user['password'])) {
+            error_log('Login failed - Invalid password for user: ' . strtolower(trim($username)));
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Nom d\'utilisateur ou mot de passe incorrect']);
+            return;
+        }
         
-        $stmt = $pdo->prepare("INSERT INTO sessions (id, user_id, username, created_at, expires_at) VALUES (?, ?, ?, NOW(), ?)");
-        $stmt->execute([$sessionId, $user['id'], $user['username'], $expiresAt]);
+        // Supprimer les anciennes sessions de cet utilisateur (optionnel - pour forcer une seule session)
+        try {
+            $stmt = $pdo->prepare("DELETE FROM sessions WHERE user_id = ?");
+            $stmt->execute([$user['id']]);
+        } catch (PDOException $e) {
+            error_log('Error deleting old sessions: ' . $e->getMessage());
+            // Continuer même si la suppression échoue
+        }
+        
+        // Créer une nouvelle session
+        try {
+            $sessionId = 'session-' . uniqid() . '-' . time();
+            $expiresAt = date('Y-m-d H:i:s', strtotime('+24 hours'));
+            
+            $stmt = $pdo->prepare("INSERT INTO sessions (id, user_id, username, created_at, expires_at) VALUES (?, ?, ?, NOW(), ?)");
+            $stmt->execute([$sessionId, $user['id'], $user['username'], $expiresAt]);
+            
+            error_log('Login successful - Session created: ' . $sessionId . ' for user: ' . $user['id']);
+        } catch (PDOException $e) {
+            error_log('Error creating session: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Erreur lors de la création de la session',
+                'error' => $e->getMessage()
+            ]);
+            return;
+        }
         
         // Retourner la session dans la réponse
         echo json_encode([
@@ -128,12 +195,18 @@ function handleLogin($data) {
             'user' => [
                 'id' => $user['id'],
                 'username' => $user['username'],
-                'name' => $user['name']
+                'name' => $user['name'] ?? $user['username']
             ]
         ]);
     } catch (Exception $e) {
+        error_log('Unexpected error in handleLogin: ' . $e->getMessage());
+        error_log('Stack trace: ' . $e->getTraceAsString());
         http_response_code(500);
-        echo json_encode(['success' => false, 'message' => 'Erreur: ' . $e->getMessage()]);
+        echo json_encode([
+            'success' => false, 
+            'message' => 'Une erreur inattendue s\'est produite: ' . $e->getMessage(),
+            'error' => $e->getMessage()
+        ]);
     }
 }
 

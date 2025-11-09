@@ -201,7 +201,11 @@ export const authAPI = {
         }
         
         try {
-            const response = await apiRequest(`auth.php?action=check-session`);
+            // Pour check-session, on doit toujours envoyer le sessionId même si authRequired est false
+            const response = await apiRequest(`auth.php?action=check-session&sessionId=${encodeURIComponent(sessionId)}`, {
+                method: 'GET',
+                authRequired: false
+            });
             return response;
         } catch (e) {
             console.error('Erreur lors de la vérification de la session:', e);
